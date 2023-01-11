@@ -1,0 +1,25 @@
+name: Shot web
+
+# **What it does**: This script once a day checks all English links and reports in issues.
+# **Why we have it**: We want to know if any links break.
+# **Who does it impact**: Docs content.
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  forward-issue:
+    name: Forward issue
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.ISSUE_FORWARD_TOKEN }}
+    steps:
+      - name: Forward issue
+        env:
+          DESTINATION_REPO: 'https://github.com/aksel/issue-receiver'
+        run: |          
+          gh issue create \
+              -R $DESTINATION_REPO \
+              -b "Hello world :)" \
+              -t "This is a test for Speakonia"
